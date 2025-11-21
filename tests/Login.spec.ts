@@ -5,14 +5,21 @@ import { LoginPage } from "../pages/LoginPage";
 test("Login and verify dashboard sidebar", async ({ page }) => {
   const login = new LoginPage(page);
 
+  // Step 1: Navigate and login
   await login.navigate();
-  await login.enterUsername("Fr@eauditor.app");
-  await login.enterPassword("Qms@909@");
+  await login.enterUsername("aaaaaaaa");
+  await login.enterPassword("bbbbbbb");
   await login.clickLogin();
 
-  // Sidebar navigation items
- 
-  await expect(page.getByText("Templates List")).toBeVisible();
-  await expect(page.getByText("Report")).toBeVisible();
+  // Step 2: Confirm login success
+  await expect(page).toHaveURL(/dashboard/, { timeout: 20000 });
+
+  // Step 3: Wait for sidebar to render
   
+  // Step 4: Verify sidebar items using flexible text match
+  const templatesList = page.getByText(/Templates List/i);
+  await expect(templatesList).toBeVisible({ timeout: 15000 });
+
+  const reportLink = page.getByText(/Report/i);
+  await expect(reportLink).toBeVisible({ timeout: 15000 });
 });
